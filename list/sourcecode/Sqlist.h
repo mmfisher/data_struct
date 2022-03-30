@@ -7,8 +7,8 @@
 
 #endif //DATA_STRUCT_SQLIST_H
 
-#define INIT_SIZE   100;
-#define LIST_INCREMENT 10;
+#define INIT_SIZE   100
+#define LIST_INCREMENT 10
 
 #include <stdlib.h>
 
@@ -22,7 +22,6 @@ typedef struct {
 bool initList(Sqlist &sqlist){
     //分配存储空间
     sqlist.data =  (ElemType* )malloc(sizeof(ElemType)*INIT_SIZE);
-
     //分配失败
     if(!sqlist.data){
         exit(1);
@@ -74,7 +73,7 @@ bool deleteElem(Sqlist &sqlist, int i, ElemType &elemType){
         return false;
     }
     //返回移除的元素
-    elemType = sqlist.data[j-1];
+    elemType = sqlist.data[i - 1];
     //从i位开始前移
     for (int j = i; j < sqlist.length; ++j) {
         sqlist.data[j-1] = sqlist.data[j];
@@ -99,6 +98,18 @@ int locateElem(Sqlist &sqlist, ElemType elemType){
         }
     }
     return 0;
+}
+
+/**
+ * 打印
+ *
+ * @param sqlist
+ */
+void printList(Sqlist sqlist){
+
+    for (int i = 0; i < sqlist.length; ++i) {
+        printf("%d\n", sqlist.data[i]);
+    }
 }
 
 
