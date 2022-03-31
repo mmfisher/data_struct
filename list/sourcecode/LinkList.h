@@ -37,19 +37,55 @@ bool initLinkList(LinkList &linkList){
     return true;
 }
 
-/**
- * 头插法
- *
- * @param linkList
- */
-void headInsert(LinkList &linkList, ElemType elem){
 
+/**
+ * 后插法
+ *
+ * @param lNode 要在后插入的节点
+ */
+bool tailInsert(LNode *lNode, ElemType elem){
+
+    if(lNode == NULL){
+        return false;
+    }
     //创建插入节点
-    LNode * lNode = (LNode *)malloc(sizeof(LNode));
-    lNode->data = elem;
-    lNode->next = linkList->next;
-    linkList->next = lNode;
+    LNode * newNode = (LNode *)malloc(sizeof(LNode));
+    if(lNode == NULL){
+        return false;
+    }
+    newNode->data = elem;
+    newNode->next = lNode->next;
+    lNode->next = newNode;
+
+    return true;
 }
+
+/**
+ * 前插操作
+ * 在指定节点前插入数据,采用交换的方式,时间复杂度很低
+ *
+ * @param lNode
+ * @return
+ */
+bool insertToPriorNode(LNode *lNode, ElemType elem){
+
+    if(lNode == NULL){
+        return false;
+    }
+    //创建插入节点
+    LNode * newNode = (LNode *)malloc(sizeof(LNode));
+    if(lNode == NULL){
+        return false;
+    }
+    newNode->next = lNode->next;
+    lNode->next = newNode;
+
+    newNode->data = lNode->data;
+    lNode->data = elem;
+    return true;
+
+}
+
 
 /**
  * 查看链表是否为空
@@ -61,25 +97,50 @@ bool isEmpty(LinkList linkList){
     return linkList->next == NULL;
 }
 
+
+/**
+ * 求表长
+ *
+ * @param linkList
+ * @return
+ */
+int length(LinkList linkList){
+    int len = 0;
+    LNode * currentNode = linkList;
+    while (currentNode != NULL){
+        currentNode = currentNode->next;
+        len ++;
+    }
+    return len;
+
+}
+
 /**
  * 尾插法创建链表
  *
  * @param linkList
  */
-void createWithTailInsert(LinkList &linkList){
+bool createWithTailInsert(LinkList &linkList){
 
     int elem;
-
-    LNode * newLNode, *tailNode;
+    //初始化链表
     initLinkList(linkList) ;
+    //记录最后一个节点
+    LNode  *tailNode = linkList;
+    //输入元素
     scanf("%d", &elem);
-
+    //9999停止
     while (elem != 9999){
-        newLNode = (LNode *)malloc(sizeof(LNode));
+        LNode  * newLNode = (LNode *)malloc(sizeof(LNode));
         newLNode->data = elem;
         newLNode ->next = NULL;
-        linkList->next = newLNode;
+        tailNode ->next = newLNode;
+        tailNode = newLNode;
+        scanf("%d", &elem);
     }
+
+    tailNode->next = NULL;
+    return true;
 
 
 
@@ -96,7 +157,11 @@ LinkList crateWithHeadInsert(LinkList &linkList){
     initLinkList(linkList) ;
     scanf("%d", &elem);
     while (elem != 9999){
-        headInsert(linkList, elem);
+        //创建插入节点
+        LNode * lNode = (LNode *)malloc(sizeof(LNode));
+        lNode->data = elem;
+        lNode->next = linkList->next;
+        linkList->next = lNode;
         scanf("%d", &elem);
     }
 }
@@ -112,14 +177,58 @@ void printLinkList(LinkList linkList){
     LNode * nextNode = linkList->next;
     while (nextNode != NULL){
 
-        printf("%d\n", nextNode->data);
+        printf("%d, ", nextNode->data);
         nextNode = nextNode->next;
     }
+    printf("\n");
 
 }
 
 /**
+ * 按值查找
+ *
+ * @param linkList
+ * @param elem
+ * @return
+ */
+LNode * locateElem(LinkList linkList, ElemType elem){
+
+    LNode * currentNode = linkList->next;
+    while (currentNode != NULL && currentNode->data != elem){
+       currentNode = currentNode->next;
+    }
+    return currentNode;
+
+}
+
+/**
+ * 按位查找节点
+ * 平均时间复杂度O(n)
+ *
+ * @param linkList
+ * @param i
+ * @return
+ */
+LNode * getNodeByPosition(LinkList linkList, int i){
+    if(i < 0){
+        return NULL;
+    }
+    //当前指针位置
+    LNode * currentPointer = linkList;
+    //当前指针在第几个节点
+    int j = 0;
+    while (currentPointer != NULL && j < i){
+        currentPointer = currentPointer->next;
+        j ++;
+    }
+    return currentPointer;
+}
+
+/**
  * 按位置插入节点
+ * 最好时机复杂度O(1)
+ * 最坏时间复杂度O(n)
+ * 平均时间复杂度O(n)  --- 1/n(1+n)n/2
  *
  * @param linkList 链表引用
  * @param i 插入位置
@@ -127,17 +236,7 @@ void printLinkList(LinkList linkList){
  * @return 是否插入成功
  */
 bool insertByPosition(LinkList &linkList, int i, ElemType elem){
-    if(i < 1){
-        return false;
-    }
-    //当前指针位置
-    LNode * currentPointer = linkList;
-    //当前指针在第几个节点
-    int j = 0;
-    while (currentPointer != NULL && j < i-1){
-        currentPointer = currentPointer->next;
-        j ++;
-    }
+    LNode * currentPointer = getNodeByPosition(linkList, i-1);
     //没有找到指定位置,i不合法
     if(currentPointer == NULL){
         return false;
@@ -147,4 +246,47 @@ bool insertByPosition(LinkList &linkList, int i, ElemType elem){
     newNode->next = currentPointer->next;
     currentPointer->next = newNode;
     return true;
+}
+
+/**
+ * 按位置删除节点
+ *
+ * @return
+ */
+bool deleteNodeByPosition(LinkList &linkList, int i, ElemType &elem){
+    //找到第i-1个元素
+    LNode * currentPointer = getNodeByPosition(linkList, i-1);
+    //没有找到指定位置,i不合法
+    if(currentPointer == NULL){
+        return false;
+    }
+    LNode * needDelNode = currentPointer->next;
+    elem = needDelNode->data;
+    currentPointer->next = needDelNode->next;
+    //释放空间
+    free(needDelNode);
+    return true;
+}
+
+
+
+/**
+ * 删除指定节点,将后面节点的数据挪到当前节点
+ * 然后删除后面节点,相当于删除指定节点,时间复杂度为O(1)
+ *
+ * @param lNode
+ * @return
+ */
+bool deleteNode(LNode *lNode){
+
+    if(lNode == NULL){
+        return false;
+    }
+    LNode * nextNode = lNode->next;
+    lNode->data = nextNode->data;
+    lNode->next = nextNode->next;
+    //如果是最后一个节点有问题
+    free(nextNode);
+    return true;
+
 }
