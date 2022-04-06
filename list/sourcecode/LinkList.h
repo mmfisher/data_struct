@@ -33,7 +33,7 @@ bool initLinkList(LinkList &linkList){
     if(linkList == NULL){
         return false;
     }
-    linkList->next = NULL;
+    linkList->next = linkList;
     return true;
 }
 
@@ -94,7 +94,7 @@ bool insertToPriorNode(LNode *lNode, ElemType elem){
  * @return
  */
 bool isEmpty(LinkList linkList){
-    return linkList->next == NULL;
+    return linkList->next == linkList;
 }
 
 
@@ -107,7 +107,7 @@ bool isEmpty(LinkList linkList){
 int length(LinkList linkList){
     int len = 0;
     LNode * currentNode = linkList;
-    while (currentNode != NULL){
+    while (currentNode->next != linkList){
         currentNode = currentNode->next;
         len ++;
     }
@@ -133,16 +133,12 @@ bool createWithTailInsert(LinkList &linkList){
     while (elem != 9999){
         LNode  * newLNode = (LNode *)malloc(sizeof(LNode));
         newLNode->data = elem;
-        newLNode ->next = NULL;
+        newLNode ->next = linkList;
         tailNode ->next = newLNode;
         tailNode = newLNode;
         scanf("%d", &elem);
     }
-
-    tailNode->next = NULL;
     return true;
-
-
 
 }
 
@@ -175,7 +171,7 @@ LinkList crateWithHeadInsert(LinkList &linkList){
 void printLinkList(LinkList linkList){
 
     LNode * nextNode = linkList->next;
-    while (nextNode != NULL){
+    while (nextNode != linkList){
 
         printf("%d, ", nextNode->data);
         nextNode = nextNode->next;
@@ -194,7 +190,7 @@ void printLinkList(LinkList linkList){
 LNode * locateElem(LinkList linkList, ElemType elem){
 
     LNode * currentNode = linkList->next;
-    while (currentNode != NULL && currentNode->data != elem){
+    while (currentNode->next != linkList && currentNode->data != elem){
        currentNode = currentNode->next;
     }
     return currentNode;
@@ -217,7 +213,7 @@ LNode * getNodeByPosition(LinkList linkList, int i){
     LNode * currentPointer = linkList;
     //当前指针在第几个节点
     int j = 0;
-    while (currentPointer != NULL && j < i){
+    while (currentPointer->next != linkList && j < i){
         currentPointer = currentPointer->next;
         j ++;
     }
@@ -289,4 +285,59 @@ bool deleteNode(LNode *lNode){
     free(nextNode);
     return true;
 
+}
+
+/**
+ * 删除不带头结点的单链表L中所有值为x的节点
+ *
+ */
+void deleteElemByValue(LNode *lNode, ElemType elem){
+    if(lNode ==NULL){
+        return;
+    }
+    LNode * p;
+    if(lNode->data == elem){
+
+        p = lNode;
+        lNode = lNode->next;
+        free(p);
+        deleteElemByValue(lNode, elem);
+    } else{
+        deleteElemByValue(lNode->next, elem);
+    }
+
+}
+
+void deleteElemByValueWithHead(LinkList &linkList, ElemType elem){
+
+    LNode * currentNode = linkList;
+    LNode * nextNode;
+    while (currentNode->next != NULL){
+        nextNode = currentNode->next;
+        if(currentNode->next->data == elem){
+            currentNode->next = nextNode->next;
+            free(nextNode);
+        } else{
+            currentNode = currentNode->next;
+        }
+
+    }
+
+}
+
+
+void createWithOrder(){
+
+    int elem;
+    LinkList  linkList;
+    initLinkList(linkList);
+
+    LNode * currentNOde;
+    while (currentNOde->data <= elem){
+        LNode * lNode = (LNode *)malloc(sizeof(LNode));
+        lNode->data = elem;
+        lNode->next = currentNOde->next;
+        currentNOde->next = lNode;
+        currentNOde = lNode;
+    }
 }
