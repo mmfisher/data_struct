@@ -108,8 +108,45 @@ int locateElem(Sqlist &sqlist, ElemType elemType){
 void printList(Sqlist sqlist){
 
     for (int i = 0; i < sqlist.length; ++i) {
-        printf("%d\n", sqlist.data[i]);
+        printf("%d ", sqlist.data[i]);
+    }
+    printf("\n");
+}
+
+/**
+ * 交换位置
+ *
+ * @param sqlist
+ * @param from
+ * @param to
+ */
+void reverse(Sqlist &sqlist, int from, int to){
+
+    int temp;
+    for(int i = 0; i < (to - from +1) / 2; i ++ ){
+        temp = sqlist.data[from + i];
+        sqlist.data[from + i] = sqlist.data[to - i];
+        sqlist.data[to - i] = temp;
     }
 }
+
+/**
+ * 王道18 页 10
+ *
+ * @param sqlist
+ * @param n
+ * @param p
+ */
+void converse(Sqlist &sqlist, int n, int p){
+    reverse(sqlist, 0, p-1);
+    printList(sqlist);
+    reverse(sqlist, p, n-1);
+    printList(sqlist);
+    reverse(sqlist, 0, n-1);
+    printList(sqlist);
+
+}
+
+
 
 

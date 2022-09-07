@@ -12,10 +12,18 @@ int main(){
     Sqlist sqList;
 
     initList(sqList);
-    insertData(sqList, 1, 10);
-    insertData(sqList, 2, 11);
-    insertData(sqList, 3, 12);
-    insertData(sqList, 4, 13);
+    insertData(sqList, 1, 1);
+    insertData(sqList, 2, 2);
+    insertData(sqList, 3, 3);
+    insertData(sqList, 4, 4);
+    insertData(sqList, 5, 5);
+    insertData(sqList, 6, 6);
+    insertData(sqList, 7, 7);
+    insertData(sqList, 8, 8);
+    insertData(sqList, 9, 9);
+    insertData(sqList, 10, 10);
+    printList(sqList);
+    converse(sqList, 10, 5);
     printList(sqList);
     return 0;
 }

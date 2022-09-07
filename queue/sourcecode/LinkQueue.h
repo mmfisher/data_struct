@@ -80,3 +80,8 @@ bool deQueue(LinkQueue &linkQueue, ElemType &data){
     free(ptr);
     return true;
 }
+
+
+bool isEmpty(LinkQueue linkQueue){
+    return linkQueue.front == NULL;
+}
