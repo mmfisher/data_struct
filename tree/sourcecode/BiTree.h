@@ -87,14 +87,14 @@ void inOrderNoRecursive(BiTree biTree){
     initStack(linkStack);
     BiTNode * biTNode = biTree;
     while (biTNode != NULL || isEmpty(linkStack)){
-//        if(biTNode = NULL){
-//            push(linkStack, biTNode);
-//            biTNode = biTNode->lChild;
-//        } else{
-//            pop(linkStack, biTNode);
-//            visitTNode(biTNode);
-//            biTNode = biTNode->rChild;
-//        }
+        if(biTNode = NULL){
+            push(linkStack, biTNode);
+            biTNode = biTNode->lChild;
+        } else{
+            pop(linkStack, biTNode);
+            visitTNode(biTNode);
+            biTNode = biTNode->rChild;
+        }
     }
 }
 
@@ -119,18 +119,18 @@ void levelOrder(BiTree biTree){
     LinkQueue linkQueue;
     initLinkNode(linkQueue);
     BiTNode current;
-//    enQueue(linkQueue, biTree);
-//
-//    while (!isEmpty(linkQueue)){
-//        deQueue(linkQueue, current);
-//        visitTNode(*biTree);
-//        if(current.lChild != NULL){
-//            enQueue(linkQueue, current.lChild);
-//        }
-//        if(!isEmpty(linkQueue)){
-//            enQueue(linkQueue, current.rChild);
-//        }
-//    }
+    enQueue(linkQueue, biTree);
+
+    while (!isEmpty(linkQueue)){
+        deQueue(linkQueue, current);
+        visitTNode(*biTree);
+        if(current.lChild != NULL){
+            enQueue(linkQueue, current.lChild);
+        }
+        if(!isEmpty(linkQueue)){
+            enQueue(linkQueue, current.rChild);
+        }
+    }
 
 }
 
