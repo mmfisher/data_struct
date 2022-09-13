@@ -73,7 +73,7 @@ int kmpIndex(HString s, HString t, int next[]){
 void getNext(HString target, int next[]){
 
     int j = 1, k = 0;
-    next[0] = -1;  
+    next[0] = -1;
     next[1] = 0;
 
     while (j < target.length){
@@ -91,3 +91,34 @@ void getNext(HString target, int next[]){
     }
 }
 
+
+/**
+ * 优化
+ *
+ * @param target
+ * @param next
+ */
+void getNextVal(HString target, int next[]){
+
+    int j = 1, k = 0;
+    next[0] = -1;
+    next[1] = 0;
+
+    while (j < target.length){
+        if(target.ch[j] == target.ch[k]){
+            j ++;
+            k ++;
+            //p
+            if(target.ch[j] != target.ch[k]){
+                next[j] = k ;
+            } else{
+                next[j] = next[k];
+            }
+        } else if(k == 0){
+            next[j+1] = 0;
+            j ++;
+        }else{
+            k = next[k];
+        }
+    }
+}

@@ -9,6 +9,14 @@
 
 typedef int ElemType;
 
+/**
+ * 用第一个元素将待排序序列划分为左右两部分
+ *
+ * @param elem
+ * @param low
+ * @param high
+ * @return
+ */
 int partition(ElemType elem[], int low, int high){
     int pivot = elem[low];
     while (low < high){
@@ -26,6 +34,13 @@ int partition(ElemType elem[], int low, int high){
     return low;
 }
 
+/**
+ * 快速排序
+ *
+ * @param elem
+ * @param low
+ * @param high
+ */
 void quickSort(ElemType elem[], int low, int high){
     if(low < high){
         int pivotpos = partition(elem, low, high);

@@ -4,6 +4,10 @@
 
 #include "QuickSort.h"
 #include "InsertSort.h"
+#include "BubbleSort.h"
+#include "SelectionSort.h"
+#include "HeapSort.h"
+#include "ShellSort.h"
 #include <stdio.h>
 
 int  main(){
